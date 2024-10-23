@@ -1,0 +1,41 @@
+CREATE DATABASE IF NOT EXISTS CalculadoraInfantil;
+USE CalculadoraInfantil;
+
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    edad INT NOT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Operaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(20) NOT NULL, -- Ejemplo: "Suma", "Resta", "Multiplicación", "División"
+    descripcion VARCHAR(100)
+);
+
+CREATE TABLE Historial (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    operacion_id INT NOT NULL,
+    numero1 DECIMAL(10,2) NOT NULL,
+    numero2 DECIMAL(10,2) NOT NULL,
+    resultado DECIMAL(10,2) NOT NULL,
+    fecha_operacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id),
+    FOREIGN KEY (operacion_id) REFERENCES Operaciones(id)
+);
+
+CREATE TABLE Puntajes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    puntaje INT NOT NULL,
+    fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
+);
+
+INSERT INTO Operaciones (tipo, descripcion) VALUES
+('Suma', 'Operación de adición'),
+('Resta', 'Operación de sustracción'),
+('Multiplicación', 'Operación de multiplicación'),
+('División', 'Operación de división');
